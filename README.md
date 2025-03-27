@@ -41,7 +41,7 @@ Ejemplo:
     "image_url": "https://google.com/imagen.jpg"
 }
 ```
-El campo `image_url` es opcional.
+El campo `image_url` es opcional, si se pasa un valor la aplicación tratará de buscar en la API (Nasa Images) en base a su nombre.
 
 ### GET /historial
 Muestra el historial de relaciones almacenadas. Requiere autenticación.
@@ -62,7 +62,7 @@ npm install
 
 3. Configurar `.env` con tus credenciales de MySQL, Redis y una clave JWT
 
-4. Configurar base de datos (Se inserta la tabla al iniciar por primera vez)
+4. Configurar base de datos (Se inserta la única tabla de relaciones al ejecutar por primera vez)
 
 5. Iniciar el servidor:
 ```bash
@@ -92,7 +92,7 @@ docker-compose down   # Detiene los servicios
 
 ## Próximas modificaciones
 
-- Integrar UI para interactuar con API
+- Integrar UI (React) para interactuar con API. Aquí mostramos un efecto parallax del parecido de ambos planetas.
 - Verificar con más precisión planetas que no tienen imagen en la API de Nasa
 - Quitar dependencia dotenv
 

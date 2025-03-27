@@ -1,0 +1,69 @@
+service: exowars
+
+frameworkVersion: '3.8.0'
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'us-east-1'}
+  environment:
+    NODE_ENV: ${opt:stage, 'dev'}
+    MYSQL_HOST: ${env:MYSQL_HOST}
+    MYSQL_USER: ${env:MYSQL_USER}
+    MYSQL_PASSWORD: ${env:MYSQL_PASSWORD}
+    MYSQL_DATABASE: ${env:MYSQL_DATABASE}
+    REDIS_HOST: ${env:REDIS_HOST}
+    REDIS_PORT: ${env:REDIS_PORT}
+    JWT_SECRET: ${env:JWT_SECRET}
+
+plugins:
+  - serverless-dotenv-plugin
+  - serverless-offline
+  - serverless-http
+
+package:
+  individually: true
+  exclude:
+    - node_modules/**
+    - src/**
+  include:
+    - dist/**
+
+functions:
+  api:
+    handler: dist/handler.handler
+    events:
+      - http:
+          path: /fusionados
+          method: get
+          cors: true
+      - http:
+          path: /almacenar
+          method: post
+          cors: true
+      - http:
+          path: /historial
+          method: get
+          cors: true
+      - http:
+          path: /imagenes/{exoplaneta}
+          method: get
+          cors: true
+
+custom:
+  dotenv:
+    path: .env
+    include:
+      - MYSQL_HOST
+      - MYSQL_USER
+      - MYSQL_PASSWORD
+      - MYSQL_DATABASE
+      - REDIS_HOST
+      - REDIS_PORT
+      - JWT_SECRET
+  serverless-offline:
+    httpPort: 3000
+    noPrependStageInUrl: true 
+
+  

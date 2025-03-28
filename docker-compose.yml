@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3'
 
 services:
   mysql:
@@ -13,15 +13,35 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - mysql-data:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
+    networks:
+      - exowars-network
     command: --default-authentication-plugin=mysql_native_password
 
   redis:
-    image: redis:latest
+    image: redis:alpine
     container_name: exowars-redis
     restart: always
     ports:
       - "6379:6379"
+    networks:
+      - exowars-network
+
+  dynamodb-local:
+    image: amazon/dynamodb-local:latest
+    ports:
+      - "8000:8000"
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath /home/dynamodblocal/data"
+    volumes:
+      - dynamodb_data:/home/dynamodblocal/data
+    networks:
+      - exowars-network
 
 volumes:
-  mysql-data:
+  mysql_data:
+  dynamodb_data:
+
+
+networks:
+  exowars-network:
+    driver: bridge

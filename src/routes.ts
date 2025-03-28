@@ -9,11 +9,6 @@ import { apiLimiter, almacenarLimiter } from './middleware/rateLimiter';
 
 const router = Router();
 
-// Endpoint de prueba
-router.get('/test', (req, res) => {
-    res.status(200).json({ message: 'API está funcionando correctamente' });
-});
-
 // Ruta para generar token de prueba
 router.get('/generate-token', (req, res) => {
     const userId = req.query.userId?.toString() || 'user123';
@@ -33,10 +28,10 @@ router.get('/generate-token', (req, res) => {
 // Rutas públicas con rate limiting básico
 router.get('/fusionados', apiLimiter, getDatosFusionados);
 router.get('/imagenes/:exoplaneta', apiLimiter, getImagenesExoplaneta);
+router.get('/historial', apiLimiter, getHistorial);
 
 // Rutas protegidas con autenticación y rate limiting
 router.post('/almacenar', authMiddleware, almacenarLimiter, postAlmacenarRelacion);
-router.get('/historial', authMiddleware, apiLimiter, getHistorial);
 
 // Ruta para limpiar datos (MySQL y caché)
 router.get('/limpiar', authMiddleware, limpiarDatos);
@@ -46,7 +41,7 @@ router.get('/health', (req, res) => {
     res.status(200).json({
         status: 'ok',
         service: 'ExoWars API',
-        version: '1.0.0',
+        version: '1.1.0',
         timestamp: new Date().toISOString()
     });
 });

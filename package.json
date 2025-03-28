@@ -33,11 +33,13 @@
     "mysql2": "^3.9.3",
     "node-cache": "^5.1.2",
     "redis": "^4.6.13",
-    "serverless": "^3.38.0",
-    "serverless-dotenv-plugin": "^6.0.0",
+    "serverless": "^4.0.0",
+    "serverless-dotenv-plugin": "6.0.0",
     "serverless-http": "^3.2.0",
-    "serverless-offline": "^12.0.4",
-    "typescript": "^5.4.3"
+    "typescript": "^5.4.3",
+    "aws-sdk": "^2.1692.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "serverless-offline": "^14.4.0"
+  }
 }

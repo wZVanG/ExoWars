@@ -1,6 +1,6 @@
 service: exowars
 
-frameworkVersion: '3.8.0'
+frameworkVersion: '4'
 
 provider:
   name: aws
@@ -9,26 +9,30 @@ provider:
   region: ${opt:region, 'us-east-1'}
   environment:
     NODE_ENV: ${opt:stage, 'dev'}
-    MYSQL_HOST: ${env:MYSQL_HOST}
-    MYSQL_USER: ${env:MYSQL_USER}
-    MYSQL_PASSWORD: ${env:MYSQL_PASSWORD}
-    MYSQL_DATABASE: ${env:MYSQL_DATABASE}
-    REDIS_HOST: ${env:REDIS_HOST}
-    REDIS_PORT: ${env:REDIS_PORT}
-    JWT_SECRET: ${env:JWT_SECRET}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:PutItem
+            - dynamodb:GetItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+            - dynamodb:Query
+            - dynamodb:Scan
+          Resource: 
+            - arn:aws:dynamodb:${self:provider.region}:${aws:accountId}:table/exowars_cache
+            - arn:aws:dynamodb:${self:provider.region}:${aws:accountId}:table/planeta_relaciones
 
 plugins:
   - serverless-dotenv-plugin
   - serverless-offline
-  - serverless-http
 
 package:
   individually: true
-  exclude:
-    - node_modules/**
-    - src/**
-  include:
-    - dist/**
+  patterns:
+    - '!src/**'
+    - 'dist/**'
 
 functions:
   api:
@@ -50,18 +54,26 @@ functions:
           path: /imagenes/{exoplaneta}
           method: get
           cors: true
+      - http:
+          path: /health
+          method: get
+          cors: true
+      - http:
+          path: /generate-token
+          method: get
+          cors: true
+      - http:
+          path: /limpiar
+          method: get
+          cors: true
 
 custom:
   dotenv:
     path: .env
     include:
-      - MYSQL_HOST
-      - MYSQL_USER
-      - MYSQL_PASSWORD
-      - MYSQL_DATABASE
-      - REDIS_HOST
-      - REDIS_PORT
       - JWT_SECRET
+      - NASA_KEY
+      - DATABASE_TYPE
   serverless-offline:
     httpPort: 3000
     noPrependStageInUrl: true 

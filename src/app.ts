@@ -1,8 +1,9 @@
 import express, { Request, Response, NextFunction } from 'express';
 import { json, urlencoded } from 'express';
 import routes from './routes';
-import { testConnection } from './config/database';
+import { testConnection, dbType, DatabaseType } from './config/database';
 import { initPlanetaTabla } from './models/PlanetaModel';
+import { initCacheTable } from './config/redis';
 
 // Crear aplicación Express
 const app = express();
@@ -54,6 +55,14 @@ const initDatabase = async () => {
     try {
         await testConnection();
         await initPlanetaTabla();
+
+        // Si estamos usando DynamoDB, inicializamos la tabla de caché
+        if (dbType === DatabaseType.DYNAMODB) {
+            await initCacheTable();
+            console.log('Sistema de caché con DynamoDB TTL inicializado');
+        } else {
+            console.log('Sistema de caché con Redis/local inicializado');
+        }
     } catch (error) {
         console.error('Error al inicializar la base de datos:', error);
     }

@@ -26,47 +26,6 @@ ExoWars es una API que fusiona datos de planetas de Star Wars con exoplanetas re
 - Dockerizada para desarrollo local
 - Implementable en AWS Lambda con Serverless Framework
 
-## Requisitos
-
-- Node.js v16+
-- Docker y Docker Compose
-- AWS CLI (opcional, solo para DynamoDB local)
-
-## Configuración
-
-1. Clona el repositorio:
-```bash
-git clone https://github.com/tu-usuario/exowars.git
-cd exowars
-```
-
-2. Instala las dependencias:
-```bash
-npm install
-```
-
-3. Configura las variables de entorno:
-```bash
-cp .env.back .env
-# Edita .env con tus propias configuraciones
-```
-
-## Ejecución en desarrollo
-
-1. Inicia los servicios necesarios con Docker:
-```bash
-./dev.sh
-```
-
-Este script iniciará:
-- Un contenedor MySQL
-- Un contenedor Redis
-- Un contenedor DynamoDB local
-
-2. Inicia la aplicación:
-```bash
-npm run dev
-```
 
 ## Configuración de base de datos
 
@@ -122,7 +81,7 @@ Obtiene imágenes reales del exoplaneta especificado.
 
 ## Instalación
 
-1. Prerequisitos: Node.js 20+, MySQL 8.0+, Redis (opcional)
+1. Prerequisitos: Node.js 20+, MySQL 8.0+ o DynamoDB, Redis (opcional)
 
 2. Clonar e instalar:
 ```bash
@@ -133,7 +92,7 @@ npm install
 
 3. Configurar `.env` con tus credenciales de MySQL, Redis y una clave JWT
 
-4. Configurar base de datos (Se inserta la única tabla de relaciones al ejecutar por primera vez)
+4. Configurar base de datos (Se inserta la única tabla de relaciones y caché al ejecutar por primera vez)
 
 5. Iniciar el servidor:
 ```bash
